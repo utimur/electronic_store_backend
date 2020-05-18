@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Getter
@@ -25,5 +26,11 @@ public class Device {
     private Long price;
 
     private Float rating;
+
+    @OneToMany(mappedBy = "device")
+    private List<Property> properties;
+
+    @OneToMany(mappedBy = "device")
+    private List<Comment> comments;
 
 }

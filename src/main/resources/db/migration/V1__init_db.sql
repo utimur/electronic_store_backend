@@ -22,6 +22,31 @@ CREATE TABLE usr_role (
     PRIMARY KEY (id)
 ) engine=myISAM;
 
+CREATE TABLE basket (
+    id BIGINT NOT NULL AUTO_INCREMENT,
+    device_id BIGINT NOT NULL references device,
+    user_id BIGINT NOT NULL references usr,
+    PRIMARY KEY (id)
+) engine=myISAM;
+
+CREATE TABLE favourite (
+    id BIGINT NOT NULL AUTO_INCREMENT,
+    device_id BIGINT NOT NULL references device,
+    user_id BIGINT NOT NULL references usr,
+    PRIMARY KEY (id)
+) engine=myISAM;
+
+CREATE TABLE orders (
+    id BIGINT NOT NULL AUTO_INCREMENT,
+    device_id BIGINT NOT NULL references device,
+    user_id BIGINT NOT NULL references usr,
+    address VARCHAR(255) NOT NULL,
+    delivery_date VARCHAR(64) NOT NULL,
+    comment VARCHAR(255),
+    PRIMARY KEY (id)
+) engine=myISAM;
+
+
 
 
 CREATE TABLE device (
@@ -52,4 +77,24 @@ CREATE TABLE model (
     name VARCHAR(64) NOT NULL,
     PRIMARY KEY (id)
 ) engine=myISAM;
+
+CREATE TABLE comment (
+    id BIGINT NOT NULL AUTO_INCREMENT,
+    device_id BIGINT NOT NULL references device,
+    user_id BIGINT NOT NULL references usr,
+    text varchar(512) NOT NULL,
+    like_count BIGINT DEFAULT 0,
+    dislike_count BIGINT DEFAULT 0,
+    PRIMARY KEY (id)
+) engine=myISAM;
+
+CREATE TABLE property (
+    id BIGINT NOT NULL AUTO_INCREMENT,
+    device_id BIGINT NOT NULL references device,
+    name VARCHAR (32) NOT NULL,
+    description VARCHAR(512) NOT NULL,
+    PRIMARY KEY (id)
+) engine=myISAM;
+
+
 
