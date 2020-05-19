@@ -1,5 +1,6 @@
 package com.example.onlinestore.entity.device;
 
+import com.example.onlinestore.entity.BaseEntity;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -9,10 +10,7 @@ import java.util.List;
 @Entity
 @Getter
 @Setter
-public class Brand {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+public class Brand extends BaseEntity {
 
     private String name;
 

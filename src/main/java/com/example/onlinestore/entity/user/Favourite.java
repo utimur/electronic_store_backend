@@ -1,5 +1,6 @@
 package com.example.onlinestore.entity.user;
 
+import com.example.onlinestore.entity.BaseEntity;
 import com.example.onlinestore.entity.device.Device;
 import lombok.Data;
 
@@ -7,10 +8,8 @@ import javax.persistence.*;
 
 @Entity
 @Data
-public class Favourite {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+public class Favourite extends BaseEntity {
+
 
     @ManyToOne
     @JoinColumn(name = "user_id")

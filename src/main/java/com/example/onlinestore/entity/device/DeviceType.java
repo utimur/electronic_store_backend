@@ -1,5 +1,6 @@
 package com.example.onlinestore.entity.device;
 
+import com.example.onlinestore.entity.BaseEntity;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -10,10 +11,7 @@ import java.util.List;
 @Table(name = "device_type")
 @Getter
 @Setter
-public class DeviceType {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+public class DeviceType extends BaseEntity {
 
     private String name;
 

@@ -12,11 +12,10 @@ CREATE TABLE usr (
     mail VARCHAR(64) NOT NULL,
     phone_number VARCHAR(11),
     avatar VARCHAR(64),
-    role_id BIGINT DEFAULT 1 REFERENCES usr_role,
     PRIMARY KEY (id)
 ) engine=myISAM;
 
-CREATE TABLE usr_role (
+CREATE TABLE role (
     id BIGINT NOT NULL AUTO_INCREMENT,
     role VARCHAR(32) NOT NULL,
     PRIMARY KEY (id)
@@ -94,6 +93,13 @@ CREATE TABLE property (
     name VARCHAR (32) NOT NULL,
     description VARCHAR(512) NOT NULL,
     PRIMARY KEY (id)
+) engine=myISAM;
+
+
+CREATE TABLE user_roles (
+    user_id BIGINT NOT NULL references usr,
+    role_id BIGINT NOT NULL references role,
+    PRIMARY KEY (user_id, role_id)
 ) engine=myISAM;
 
 

@@ -1,6 +1,7 @@
 package com.example.onlinestore.entity.device;
 
 
+import com.example.onlinestore.entity.BaseEntity;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -12,10 +13,7 @@ import java.util.List;
 @Getter
 @Setter
 @NoArgsConstructor
-public class Device {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+public class Device extends BaseEntity {
 
     private String name;
 
