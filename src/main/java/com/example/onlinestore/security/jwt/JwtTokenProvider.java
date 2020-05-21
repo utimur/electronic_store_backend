@@ -19,20 +19,24 @@ import java.util.Base64;
 import java.util.Date;
 import java.util.List;
 
+
 @Component
 public class JwtTokenProvider {
 
     @Value("${jwt.token.secret}")
     private String secret;
+
     @Value("${jwt.token.expired}")
-    private long expired;
+    private long validityInMilliseconds;
+
 
     @Autowired
     private UserDetailsService userDetailsService;
 
     @Bean
     public BCryptPasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
+        BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
+        return bCryptPasswordEncoder;
     }
 
     @PostConstruct
@@ -41,11 +45,12 @@ public class JwtTokenProvider {
     }
 
     public String createToken(String username, List<Role> roles) {
+
         Claims claims = Jwts.claims().setSubject(username);
-        claims.put("roles", getRolesName(roles));
+        claims.put("roles", getRoleNames(roles));
 
         Date now = new Date();
-        Date validity = new Date(now.getTime() + expired);
+        Date validity = new Date(now.getTime() + validityInMilliseconds);
 
         return Jwts.builder()//
                 .setClaims(claims)//
@@ -82,13 +87,17 @@ public class JwtTokenProvider {
 
             return true;
         } catch (JwtException | IllegalArgumentException e) {
-            throw new JwtAuthException("JWT token is expired or invalid");
+            throw new JwtAuthenticationException("JWT token is expired or invalid");
         }
     }
 
-    public List<String> getRolesName(List<Role> roles){
+    private List<String> getRoleNames(List<Role> userRoles) {
         List<String> result = new ArrayList<>();
-        roles.forEach(role -> result.add(role.getRole()));
+
+        userRoles.forEach(role -> {
+            result.add(role.getRole());
+        });
+
         return result;
     }
 }

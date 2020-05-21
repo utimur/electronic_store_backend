@@ -15,7 +15,7 @@ import java.util.List;
 @NoArgsConstructor
 public class Device extends BaseEntity {
 
-    private String name;
+    private Long count;
 
     @OneToOne
     @JoinColumn(name = "model_id", referencedColumnName = "id")

@@ -18,12 +18,12 @@ import java.util.List;
 public class User extends BaseEntity {
 
 
-    @Size(min = 3, max = 15, message = "Uncorrect password")
     private String password;
 
+    @Size(min = 3, max = 15, message = "Uncorrect username")
     private String username;
 
-    @Email
+    @Email(message = "Uncorrect email")
     private String mail;
 
     private String phoneNumber;

@@ -15,7 +15,7 @@ CREATE TABLE usr (
     PRIMARY KEY (id)
 ) engine=myISAM;
 
-CREATE TABLE role (
+CREATE TABLE roles (
     id BIGINT NOT NULL AUTO_INCREMENT,
     role VARCHAR(32) NOT NULL,
     PRIMARY KEY (id)
@@ -50,7 +50,7 @@ CREATE TABLE orders (
 
 CREATE TABLE device (
     id BIGINT NOT NULL AUTO_INCREMENT,
-    name VARCHAR(255) NOT NULL,
+    count BIGINT DEFAULT 0,
     model_id BIGINT NOT NULL REFERENCES model,
     price BIGINT NOT NULL ,
     rating FLOAT DEFAULT 0,

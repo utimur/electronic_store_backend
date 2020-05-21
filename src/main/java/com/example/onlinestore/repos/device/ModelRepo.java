@@ -4,4 +4,5 @@ import com.example.onlinestore.entity.device.Model;
 import org.springframework.data.repository.CrudRepository;
 
 public interface ModelRepo extends CrudRepository<Model,Long> {
+    public Model findByName(String name);
 }
