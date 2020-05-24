@@ -2,10 +2,10 @@ package com.example.onlinestore.service.device;
 
 
 import com.example.onlinestore.entity.device.Device;
-import com.example.onlinestore.entity.device.Model;
+import com.example.onlinestore.exceptions.existException.DeviceAlreadyExist;
+import com.example.onlinestore.exceptions.existException.DeviceTypeAlreadyExist;
 import com.example.onlinestore.exceptions.notFoundException.DeviceNotFoundException;
 import com.example.onlinestore.repos.device.DeviceRepo;
-import com.example.onlinestore.repos.device.ModelRepo;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -14,11 +14,9 @@ import java.util.List;
 public class DeviceService {
 
     private final DeviceRepo deviceRepo;
-    private final ModelRepo modelRepo;
 
-    public DeviceService(DeviceRepo deviceRepo, ModelRepo modelRepo) {
+    public DeviceService(DeviceRepo deviceRepo) {
         this.deviceRepo = deviceRepo;
-        this.modelRepo = modelRepo;
     }
 
     public Device getById(Long id) throws DeviceNotFoundException {
@@ -28,16 +26,12 @@ public class DeviceService {
         return deviceRepo.findById(id).get();
     }
 
-    public Device getByModelName(String modelName) throws DeviceNotFoundException {
-        Model model = modelRepo.findByName(modelName);
-        if (model == null) {
-            throw new DeviceNotFoundException("Device with model name " + modelName + " not found");
+    public List<Device> getAllByBrandId(Long brandId) throws DeviceNotFoundException {
+        List<Device> devices = deviceRepo.findDevicesByBrandId(brandId);
+        if (devices.size() == 0) {
+            throw new DeviceNotFoundException("Devices with brand id " + brandId + " not found");
         }
-        Device device = deviceRepo.findByModelId(model.getId());
-        if(device == null){
-            throw new DeviceNotFoundException("Device with model name " + modelName + " not found");
-        }
-        return device;
+        return devices;
     }
 
     public List<Device> getAll() throws DeviceNotFoundException {
@@ -48,7 +42,10 @@ public class DeviceService {
         return devices;
     }
 
-    public void save(Device device) {
-        deviceRepo.save(device);
+    public Device save(Device device) {
+        if (deviceRepo.findByName(device.getName()) != null) {
+            throw new DeviceAlreadyExist("Device with name " + device.getName() + " already exist");
+        }
+        return deviceRepo.save(device);
     }
 }

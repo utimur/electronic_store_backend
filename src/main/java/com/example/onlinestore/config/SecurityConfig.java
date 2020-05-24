@@ -15,8 +15,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final JwtTokenProvider jwtTokenProvider;
 
+    // Whitelist
     private static final String ADMIN_ENDPOINT = "/api/v1/admin/**";
     private static final String LOGIN_ENDPOINT = "/api/v1/auth/**";
+    private static final String[] SWAGGER_ENDPOINT = {
+            "/v2/api-docs",
+            "/swagger-resources/**",
+            "/swagger-ui.html",
+            "/webjars/springfox-swagger-ui/**"
+    };
 
     @Autowired
     public SecurityConfig(JwtTokenProvider jwtTokenProvider) {
@@ -39,8 +46,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers(LOGIN_ENDPOINT).permitAll()
                 .antMatchers(ADMIN_ENDPOINT).hasRole("ADMIN")
+                .antMatchers(SWAGGER_ENDPOINT).permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .apply(new JwtConfigurer(jwtTokenProvider));
+
     }
 }

@@ -1,10 +1,7 @@
 package com.example.onlinestore.entity.user;
 
-import com.example.onlinestore.entity.BaseEntity;
 import lombok.Data;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 import javax.persistence.*;
 import javax.validation.constraints.Email;
@@ -15,9 +12,11 @@ import java.util.List;
 @Table(name = "usr")
 @Data
 @NoArgsConstructor
-public class User extends BaseEntity {
+public class User {
 
-
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
     private String password;
 
     @Size(min = 3, max = 15, message = "Uncorrect username")
@@ -42,4 +41,14 @@ public class User extends BaseEntity {
     private List<Basket> baskets;
     @OneToMany(mappedBy = "user")
     private List<Favourite> favourites;
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "password='" + password + '\'' +
+                ", username='" + username + '\'' +
+                ", mail='" + mail + '\'' +
+                ", phoneNumber='" + phoneNumber + '\'' +
+                '}';
+    }
 }

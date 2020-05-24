@@ -51,7 +51,9 @@ CREATE TABLE orders (
 CREATE TABLE device (
     id BIGINT NOT NULL AUTO_INCREMENT,
     count BIGINT DEFAULT 0,
-    model_id BIGINT NOT NULL REFERENCES model,
+    name VARCHAR(255) NOT NULL,
+    brand_id BIGINT NOT NULL REFERENCES brand,
+    image VARCHAR(255) default "",
     price BIGINT NOT NULL ,
     rating FLOAT DEFAULT 0,
     PRIMARY KEY (id)
@@ -70,12 +72,7 @@ CREATE TABLE device_type(
     PRIMARY KEY (id)
 ) engine=myISAM;
 
-CREATE TABLE model (
-    id BIGINT NOT NULL AUTO_INCREMENT,
-    brand_id BIGINT NOT NULL references brand,
-    name VARCHAR(64) NOT NULL,
-    PRIMARY KEY (id)
-) engine=myISAM;
+
 
 CREATE TABLE comment (
     id BIGINT NOT NULL AUTO_INCREMENT,

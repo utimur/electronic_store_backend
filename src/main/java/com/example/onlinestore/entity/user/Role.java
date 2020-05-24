@@ -1,7 +1,6 @@
 package com.example.onlinestore.entity.user;
 
 
-import com.example.onlinestore.entity.BaseEntity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -15,7 +14,10 @@ import java.util.List;
 @Getter
 @Setter
 @NoArgsConstructor
-public class Role extends BaseEntity {
+public class Role  {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
     private String role;
 
@@ -26,7 +28,7 @@ public class Role extends BaseEntity {
     @Override
     public String toString() {
         return "Role{" +
-                "id: " + super.getId() + ", " +
+                "id: " + getId() + ", " +
                 "name: " + role + "}";
     }
 }

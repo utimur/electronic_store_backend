@@ -9,4 +9,6 @@ public interface BrandRepo extends CrudRepository<Brand, Long> {
     List<Brand> findBrandsByDeviceTypeId(Long deviceTypeId);
 
     Brand findByName(String name);
+
+    List<Brand> findAll();
 }

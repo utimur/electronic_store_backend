@@ -1,4 +1,4 @@
-package com.example.onlinestore.dto;
+package com.example.onlinestore.dto.user;
 
 import com.example.onlinestore.entity.user.User;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;

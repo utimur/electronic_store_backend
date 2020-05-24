@@ -6,6 +6,9 @@ import org.springframework.data.repository.CrudRepository;
 import java.util.List;
 
 public interface DeviceRepo extends CrudRepository<Device, Long> {
-    public Device findByModelId(Long modelId);
-    public List<Device> findAll();
+    List<Device> findAll();
+
+    List<Device> findDevicesByBrandId(Long brandId);
+
+    Device findByName(String name);
 }

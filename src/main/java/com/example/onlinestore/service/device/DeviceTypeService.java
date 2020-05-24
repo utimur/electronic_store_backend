@@ -33,11 +33,11 @@ public class DeviceTypeService {
         return devices;
     }
 
-    public void save(DeviceType deviceType) throws DeviceTypeAlreadyExist {
+    public DeviceType save(DeviceType deviceType) throws DeviceTypeAlreadyExist {
         if(deviceTypeRepo.findByName(deviceType.getName()) != null){
             throw new DeviceTypeAlreadyExist("Device types not found");
         } else{
-            deviceTypeRepo.save(deviceType);
+           return deviceTypeRepo.save(deviceType);
         }
     }
 }

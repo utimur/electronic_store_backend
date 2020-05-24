@@ -1,6 +1,6 @@
 package com.example.onlinestore.controller.v1;
 
-import com.example.onlinestore.dto.AuthenticationRequestDto;
+import com.example.onlinestore.dto.user.AuthenticationRequestDto;
 import com.example.onlinestore.entity.user.User;
 import com.example.onlinestore.exceptions.existException.UserAlreadyExistAuthException;
 import com.example.onlinestore.security.jwt.JwtTokenProvider;

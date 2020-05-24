@@ -5,6 +5,7 @@ import com.example.onlinestore.exceptions.existException.BrandAlreadyExist;
 import com.example.onlinestore.exceptions.notFoundException.BrandNotFoundException;
 import com.example.onlinestore.repos.device.BrandRepo;
 import com.example.onlinestore.repos.device.DeviceTypeRepo;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import javax.swing.plaf.basic.BasicRadioButtonMenuItemUI;
@@ -27,10 +28,18 @@ public class BrandService {
         return brands;
     }
 
-    public void save(Brand brand) {
+    public Brand save(Brand brand) {
         if(brandRepo.findByName(brand.getName()) != null) {
             throw new BrandAlreadyExist("Brand with name " + brand.getName() + " already exist");
         }
-        brandRepo.save(brand);
+        return brandRepo.save(brand);
+    }
+
+    public List<Brand> getAll() throws BrandNotFoundException {
+        List<Brand> brands = brandRepo.findAll();
+        if (brands.size() == 0) {
+            throw new BrandNotFoundException("Brands not found");
+        }
+        return brands;
     }
 }
