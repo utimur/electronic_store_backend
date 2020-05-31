@@ -6,9 +6,16 @@ import com.example.onlinestore.exceptions.existException.DeviceAlreadyExist;
 import com.example.onlinestore.exceptions.existException.DeviceTypeAlreadyExist;
 import com.example.onlinestore.exceptions.notFoundException.DeviceNotFoundException;
 import com.example.onlinestore.repos.device.DeviceRepo;
+import com.example.onlinestore.service.ImageService;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class DeviceService {
@@ -47,5 +54,22 @@ public class DeviceService {
             throw new DeviceAlreadyExist("Device with name " + device.getName() + " already exist");
         }
         return deviceRepo.save(device);
+    }
+
+    public void setDeviceImage(Device device, MultipartFile file) throws IOException {
+        if(file != null) {
+            String fileName = UUID.randomUUID().toString() + ".jpg";
+            File convertFile = new File(ImageService.IMAGE_PATH + fileName);
+            convertFile.createNewFile();
+            FileOutputStream fout = new FileOutputStream(convertFile);
+            fout.write(file.getBytes());
+            fout.close();
+            device.setImage(fileName);
+        }
+        deviceRepo.save(device);
+    }
+
+    public void update(Device device) {
+        deviceRepo.save(device);
     }
 }

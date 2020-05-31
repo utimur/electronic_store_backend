@@ -1,12 +1,17 @@
 package com.example.onlinestore.dto.user;
 
 import com.example.onlinestore.entity.user.User;
+import com.example.onlinestore.service.ImageService;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import java.io.File;
 
 @Data
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class UserDto {
+
     private Long id;
     private String username;
     private String mail;
@@ -28,8 +33,16 @@ public class UserDto {
         userDto.setId(user.getId());
         userDto.setUsername(user.getUsername());
         userDto.setMail(user.getMail());
-        userDto.setAvatar(user.getAvatar());
         userDto.setPhoneNumber(user.getPhoneNumber());
+
+        if(user.getAvatar() != null) {
+            String img = ImageService.IMAGE_PATH + user.getAvatar();
+            File imgFile = new File(img);
+            if (imgFile.exists()) {
+                userDto.setAvatar(ImageService.encodeFileToBase64Binary(imgFile));
+            }
+        }
+
 
         return userDto;
     }

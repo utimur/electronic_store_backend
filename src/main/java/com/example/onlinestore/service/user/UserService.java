@@ -9,11 +9,15 @@ public interface UserService {
 
     User register(User user);
 
-    User findByUsername(String username);
+    User getByUsername(String username);
 
-    User findById(Long id);
+    User getById(Long id);
+
+    List<User> getAll();
 
     void delete(Long id);
+
+    void update(User user);
 
 
 }

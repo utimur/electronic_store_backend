@@ -1,6 +1,7 @@
 package com.example.onlinestore.controller.v1.admin;
 
 
+import com.example.onlinestore.dto.device.DeviceDto;
 import com.example.onlinestore.dto.device.NewDeviceDto;
 import com.example.onlinestore.entity.device.Brand;
 import com.example.onlinestore.entity.device.Device;
@@ -15,14 +16,18 @@ import com.example.onlinestore.service.device.DeviceTypeService;
 import com.example.onlinestore.service.user.UserService;
 import io.swagger.annotations.Api;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping(value = "/api/v1/admin/device")
-@Api(value = "Admin controller")
+@RequestMapping(value = "/api/v1/admin/devices")
+@CrossOrigin
 public class AdminDeviceControllerV1 {
 
     private final UserService userService;
@@ -69,16 +74,32 @@ public class AdminDeviceControllerV1 {
 
 
     @GetMapping
-    public ResponseEntity<List<Device>> getDevices() throws DeviceNotFoundException {
-        return new ResponseEntity<>(deviceService.getAll(), HttpStatus.OK);
+    public ResponseEntity<List<DeviceDto>> getDevices() throws DeviceNotFoundException {
+        List<DeviceDto> devices = deviceService.getAll().stream()
+                .map(DeviceDto::fromDevice)
+                .collect(Collectors.toList());
+
+        return new ResponseEntity<>(devices, HttpStatus.OK);
     }
     @GetMapping("/{id}")
-    public ResponseEntity<List<Device>> getDevicesByBrandId(@PathVariable Long id) throws DeviceNotFoundException {
-        return new ResponseEntity<>(deviceService.getAllByBrandId(id), HttpStatus.OK);
+    public ResponseEntity<List<DeviceDto>> getDevicesByBrandId(@PathVariable Long id) throws DeviceNotFoundException {
+        List<DeviceDto> devices = deviceService.getAllByBrandId(id).stream()
+                .map(DeviceDto::fromDevice)
+                .collect(Collectors.toList());
+
+        return new ResponseEntity<>( devices, HttpStatus.OK);
     }
     @PostMapping
     public ResponseEntity<Device> saveDevice(@RequestBody NewDeviceDto newDeviceDto)  {
         return new ResponseEntity<>(deviceService.save(NewDeviceDto.ToDevice(newDeviceDto)), HttpStatus.OK);
+    }
+
+    @PostMapping(value = "/avatar", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<DeviceDto> setDeviceImage(@RequestParam MultipartFile file,
+                                                    @RequestParam(name = "device_id") Long deviceId) throws DeviceNotFoundException, IOException {
+        Device device = deviceService.getById(deviceId);
+        deviceService.setDeviceImage(device,file);
+        return new ResponseEntity<>(DeviceDto.fromDevice(device), HttpStatus.OK);
     }
 
 }

@@ -2,6 +2,7 @@ package com.example.onlinestore.service.user.impl;
 
 import com.example.onlinestore.entity.user.Role;
 import com.example.onlinestore.entity.user.User;
+import com.example.onlinestore.exceptions.notFoundException.UserNotFoundException;
 import com.example.onlinestore.repos.user.RoleRepo;
 import com.example.onlinestore.repos.user.UserRepo;
 import com.example.onlinestore.service.user.UserService;
@@ -47,7 +48,7 @@ public class UserServiceImpl implements UserService {
 
 
     @Override
-    public User findByUsername(String username) {
+    public User getByUsername(String username) {
         User result = userRepository.findByUsername(username);
         log.info("IN findByUsername - user: {} found by username: {}", result, username);
 
@@ -55,7 +56,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User findById(Long id) {
+    public User getById(Long id) {
         User result = userRepository.findById(id).orElse(null);
 
         if (result == null) {
@@ -67,7 +68,23 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public List<User> getAll() {
+        List<User> users = userRepository.findAll();
+        if (users.size() == 0) {
+            throw new UserNotFoundException("Users not found");
+        }
+        return users;
+    }
+
+    @Override
     public void delete(Long id) {
         userRepository.deleteById(id);
     }
+
+    @Override
+    public void update(User user) {
+        userRepository.save(user);
+    }
+
+
 }

@@ -53,7 +53,7 @@ CREATE TABLE device (
     count BIGINT DEFAULT 0,
     name VARCHAR(255) NOT NULL,
     brand_id BIGINT NOT NULL REFERENCES brand,
-    image VARCHAR(255) default "",
+    image VARCHAR(255) default NULL,
     price BIGINT NOT NULL ,
     rating FLOAT DEFAULT 0,
     PRIMARY KEY (id)

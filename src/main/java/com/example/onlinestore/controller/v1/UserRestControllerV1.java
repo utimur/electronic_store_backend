@@ -1,18 +1,28 @@
 package com.example.onlinestore.controller.v1;
 
+import com.example.onlinestore.dto.user.UserDto;
 import com.example.onlinestore.entity.user.User;
+import com.example.onlinestore.service.ImageService;
 import com.example.onlinestore.service.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.UUID;
+
 
 
 @RestController
-@RequestMapping(value = "/api/v1/users/")
+@RequestMapping(value = "/api/v1/users")
+@CrossOrigin
 public class UserRestControllerV1 {
     private final UserService userService;
 
@@ -21,14 +31,28 @@ public class UserRestControllerV1 {
         this.userService = userService;
     }
 
-    @GetMapping(value = "{id}")
-    public ResponseEntity<User> getUserById(@PathVariable(name = "id") Long id){
-        User user = userService.findById(id);
+    @PostMapping(value = "/avatar", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<UserDto> setAvatar(@RequestParam(value = "img", required = false) MultipartFile img,
+                                             @RequestParam("user_id") Long userId) throws IOException {
 
-        if(user == null){
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        User user = userService.getById(userId);
+        if(img != null) {
+            String fileName = UUID.randomUUID().toString() + ".jpg";
+            File convertFile = new File(ImageService.IMAGE_PATH + fileName);
+            convertFile.createNewFile();
+            FileOutputStream fout = new FileOutputStream(convertFile);
+            fout.write(img.getBytes());
+            fout.close();
+            user.setAvatar(fileName);
         }
+        userService.update(user);
 
-        return new ResponseEntity<>(user, HttpStatus.OK);
+        return new ResponseEntity<>(UserDto.fromUser(user), HttpStatus.OK);
+    }
+
+    @GetMapping
+    public ResponseEntity<UserDto> getUser(@RequestParam Long id){
+        User user = userService.getById(id);
+        return new ResponseEntity<>(UserDto.fromUser(user), HttpStatus.OK);
     }
 }
