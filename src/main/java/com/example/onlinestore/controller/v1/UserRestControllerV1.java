@@ -36,15 +36,7 @@ public class UserRestControllerV1 {
                                              @RequestParam("user_id") Long userId) throws IOException {
 
         User user = userService.getById(userId);
-        if(img != null) {
-            String fileName = UUID.randomUUID().toString() + ".jpg";
-            File convertFile = new File(ImageService.IMAGE_PATH + fileName);
-            convertFile.createNewFile();
-            FileOutputStream fout = new FileOutputStream(convertFile);
-            fout.write(img.getBytes());
-            fout.close();
-            user.setAvatar(fileName);
-        }
+        user.setAvatar(ImageService.saveFile(img));
         userService.update(user);
 
         return new ResponseEntity<>(UserDto.fromUser(user), HttpStatus.OK);

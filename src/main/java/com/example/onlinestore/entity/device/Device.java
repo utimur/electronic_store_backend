@@ -18,7 +18,7 @@ public class Device  {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private Long count;
+    private Long count = new Long(0);
 
     @ManyToOne
     @JoinColumn(name = "brand_id", referencedColumnName = "id")
@@ -29,14 +29,18 @@ public class Device  {
 
     private Long price;
 
-    private Float rating;
+    private Float rating = new Float(0);
 
     private String image;
 
-    @OneToMany(mappedBy = "device")
+    @OneToMany(mappedBy = "device",  cascade = CascadeType.ALL)
     private List<Property> properties;
 
-    @OneToMany(mappedBy = "device")
+    @OneToMany(mappedBy = "device",  cascade = CascadeType.ALL)
     private List<Comment> comments;
+
+    @ManyToOne
+    @JoinColumn(name ="type_id")
+    private DeviceType deviceType;
 
 }

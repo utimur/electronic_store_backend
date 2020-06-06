@@ -41,6 +41,22 @@ public class DeviceService {
         return devices;
     }
 
+    public List<Device> getAllByTypeId(Long deviceTypeId) throws DeviceNotFoundException {
+        List<Device> devices = deviceRepo.findDevicesByDeviceTypeId(deviceTypeId);
+        if (devices.size() == 0) {
+            throw new DeviceNotFoundException("Devices with type id " + deviceTypeId + " not found");
+        }
+        return devices;
+    }
+
+    public List<Device> getAllByTypeIdAndBrandId(Long deviceTypeId, Long brandId) throws DeviceNotFoundException {
+        List<Device> devices = deviceRepo.findDevicesByDeviceTypeIdAndBrandId(deviceTypeId,brandId);
+        if (devices.size() == 0) {
+            throw new DeviceNotFoundException("Devices with type id " + deviceTypeId + " not found");
+        }
+        return devices;
+    }
+
     public List<Device> getAll() throws DeviceNotFoundException {
         List<Device> devices = deviceRepo.findAll();
         if(devices.size() == 0){
@@ -56,18 +72,7 @@ public class DeviceService {
         return deviceRepo.save(device);
     }
 
-    public void setDeviceImage(Device device, MultipartFile file) throws IOException {
-        if(file != null) {
-            String fileName = UUID.randomUUID().toString() + ".jpg";
-            File convertFile = new File(ImageService.IMAGE_PATH + fileName);
-            convertFile.createNewFile();
-            FileOutputStream fout = new FileOutputStream(convertFile);
-            fout.write(file.getBytes());
-            fout.close();
-            device.setImage(fileName);
-        }
-        deviceRepo.save(device);
-    }
+
 
     public void update(Device device) {
         deviceRepo.save(device);

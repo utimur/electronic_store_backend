@@ -1,7 +1,9 @@
 package com.example.onlinestore.controller.v1.admin;
 
 
+import com.example.onlinestore.dto.device.BrandDto;
 import com.example.onlinestore.dto.device.DeviceDto;
+import com.example.onlinestore.dto.device.DeviceTypeDto;
 import com.example.onlinestore.dto.device.NewDeviceDto;
 import com.example.onlinestore.entity.device.Brand;
 import com.example.onlinestore.entity.device.Device;
@@ -10,6 +12,7 @@ import com.example.onlinestore.exceptions.notFoundException.BrandNotFoundExcepti
 import com.example.onlinestore.exceptions.notFoundException.DeviceNotFoundException;
 import com.example.onlinestore.exceptions.notFoundException.DeviceTypeNotFoundException;
 import com.example.onlinestore.repos.device.BrandRepo;
+import com.example.onlinestore.service.ImageService;
 import com.example.onlinestore.service.device.BrandService;
 import com.example.onlinestore.service.device.DeviceService;
 import com.example.onlinestore.service.device.DeviceTypeService;
@@ -47,59 +50,50 @@ public class AdminDeviceControllerV1 {
 
 
 
-    @GetMapping("/type")
-    public ResponseEntity<List<DeviceType>> getTypes() throws DeviceTypeNotFoundException {
-        return new ResponseEntity<>(deviceTypeService.getAll(), HttpStatus.OK);
-    }
+
     @PostMapping("/type")
     public ResponseEntity<DeviceType> saveType(@RequestBody DeviceType deviceType) {
         return new ResponseEntity<>(deviceTypeService.save(deviceType), HttpStatus.OK);
     }
 
+    @DeleteMapping("/type")
+    public ResponseEntity deleteType(@RequestParam String name) throws DeviceTypeNotFoundException {
+        deviceTypeService.deleteByName(name);
+        return new ResponseEntity(HttpStatus.OK);
+    }
 
 
-    @GetMapping("/brand")
-    public ResponseEntity<List<Brand>> getBrands() throws BrandNotFoundException {
-        return new ResponseEntity<>(brandService.getAll(), HttpStatus.OK);
-    }
-    @GetMapping("/brand/{id}")
-    public ResponseEntity<List<Brand>> getBrandsByTypeId(@PathVariable Long id) throws BrandNotFoundException {
-        return new ResponseEntity<>(brandService.getAllByDeviceTypeId(id), HttpStatus.OK);
-    }
+
+
     @PostMapping("/brand")
-    public ResponseEntity<Brand> saveBrand(@RequestBody Brand brand) {
-        return new ResponseEntity<>(brandService.save(brand), HttpStatus.OK);
+    public ResponseEntity saveBrand(@RequestBody BrandDto brandDto) throws DeviceTypeNotFoundException {
+        Brand brand = BrandDto.toBrand(brandDto);
+        brand.setDeviceType(deviceTypeService.getByName(brandDto.getDeviceTypeName()));
+        brandService.save(brand);
+        return new ResponseEntity<>(brandDto, HttpStatus.OK);
+    }
+
+    @DeleteMapping("/brand")
+    public ResponseEntity deleteBrand(@RequestParam String name, @RequestParam(name = "type_name") String typeName) throws BrandNotFoundException {
+        System.out.println(name + " " + typeName);
+        brandService.deleteByNameAndTypeName(name, typeName);
+        return new ResponseEntity( HttpStatus.OK);
     }
 
 
-
-    @GetMapping
-    public ResponseEntity<List<DeviceDto>> getDevices() throws DeviceNotFoundException {
-        List<DeviceDto> devices = deviceService.getAll().stream()
-                .map(DeviceDto::fromDevice)
-                .collect(Collectors.toList());
-
-        return new ResponseEntity<>(devices, HttpStatus.OK);
-    }
-    @GetMapping("/{id}")
-    public ResponseEntity<List<DeviceDto>> getDevicesByBrandId(@PathVariable Long id) throws DeviceNotFoundException {
-        List<DeviceDto> devices = deviceService.getAllByBrandId(id).stream()
-                .map(DeviceDto::fromDevice)
-                .collect(Collectors.toList());
-
-        return new ResponseEntity<>( devices, HttpStatus.OK);
-    }
-    @PostMapping
-    public ResponseEntity<Device> saveDevice(@RequestBody NewDeviceDto newDeviceDto)  {
-        return new ResponseEntity<>(deviceService.save(NewDeviceDto.ToDevice(newDeviceDto)), HttpStatus.OK);
-    }
-
-    @PostMapping(value = "/avatar", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<DeviceDto> setDeviceImage(@RequestParam MultipartFile file,
-                                                    @RequestParam(name = "device_id") Long deviceId) throws DeviceNotFoundException, IOException {
-        Device device = deviceService.getById(deviceId);
-        deviceService.setDeviceImage(device,file);
+    @PostMapping( consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity saveDevice(@RequestParam String name,
+                                             @RequestParam String brandName,
+                                             @RequestParam String typeName,
+                                             @RequestParam Long price,
+                                             @RequestParam MultipartFile file) throws BrandNotFoundException, IOException, DeviceTypeNotFoundException {
+        Device device = new Device();
+        device.setName(name);
+        device.setBrand(brandService.getByNameAndTypeName(brandName, typeName));
+        device.setDeviceType(deviceTypeService.getByName(typeName));
+        device.setPrice(price);
+        device.setImage(ImageService.saveFile(file));
+        deviceService.save(device);
         return new ResponseEntity<>(DeviceDto.fromDevice(device), HttpStatus.OK);
     }
-
 }

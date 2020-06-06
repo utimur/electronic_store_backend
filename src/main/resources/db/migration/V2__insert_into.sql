@@ -16,10 +16,7 @@ INSERT INTO device_type values (2, "Ноутбуки");
 
 INSERT INTO brand values (1,1, "Apple");
 INSERT INTO brand values (2,1, "Samsung");
-
-INSERT INTO device values (1,1,"11 pro", 1, null, 120000, 0);
-INSERT INTO device values (2,3, "SE",1, null, 52000, 0);
-INSERT INTO device values (3,3, "10",2, null , 65000, 0);
+INSERT INTO brand values (3,2, "Samsung");
 
 INSERT INTO user_roles values (1,1);
 INSERT INTO user_roles values (1,2);

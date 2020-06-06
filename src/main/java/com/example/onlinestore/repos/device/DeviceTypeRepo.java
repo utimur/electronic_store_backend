@@ -9,4 +9,5 @@ public interface DeviceTypeRepo extends CrudRepository<DeviceType, Long> {
     List<DeviceType> findAll();
 
     DeviceType findByName(String name);
+    void deleteByName(String name);
 }

@@ -17,7 +17,9 @@ public class DeviceType {
 
     private String name;
 
-    @OneToMany(mappedBy = "deviceType")
+    @OneToMany(mappedBy = "deviceType", cascade = CascadeType.ALL)
     private List<Brand> brands;
+    @OneToMany(mappedBy = "deviceType", cascade = CascadeType.ALL)
+    private List<Brand> devices;
 
 }

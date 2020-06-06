@@ -19,6 +19,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter implements WebM
 
     // Whitelist
     private static final String ADMIN_ENDPOINT = "/api/v1/admin/**";
+    private static final String DEVICE_ENDPOINT = "/api/v1/devices/**";
     private static final String LOGIN_ENDPOINT = "/api/v1/auth/**";
     private static final String[] SWAGGER_ENDPOINT = {
             "/v2/api-docs",
@@ -51,6 +52,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter implements WebM
                 .antMatchers(LOGIN_ENDPOINT).permitAll()
                 .antMatchers(ADMIN_ENDPOINT).hasRole("ADMIN")
                 .antMatchers(SWAGGER_ENDPOINT).permitAll()
+                .antMatchers(DEVICE_ENDPOINT).permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .apply(new JwtConfigurer(jwtTokenProvider));

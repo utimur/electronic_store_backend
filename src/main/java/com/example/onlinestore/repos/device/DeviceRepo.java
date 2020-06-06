@@ -9,6 +9,9 @@ public interface DeviceRepo extends CrudRepository<Device, Long> {
     List<Device> findAll();
 
     List<Device> findDevicesByBrandId(Long brandId);
+    List<Device> findDevicesByDeviceTypeId(Long deviceTypeId);
+    List<Device> findDevicesByDeviceTypeIdAndBrandId(Long deviceTypeId, Long brandId);
 
     Device findByName(String name);
+    Device deleteByName(String name);
 }

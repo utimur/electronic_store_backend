@@ -2,11 +2,10 @@ package com.example.onlinestore.service;
 
 import org.apache.tomcat.util.codec.binary.Base64;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
+import java.io.*;
+import java.util.UUID;
 
 public class ImageService {
     public static final String IMAGE_PATH = "C:\\Users\\tim\\Desktop\\online-store\\online-store\\src\\main\\resources\\static\\img\\";
@@ -26,5 +25,18 @@ public class ImageService {
         }
 
         return encodedfile;
+    }
+
+    public static String saveFile(MultipartFile img) throws IOException {
+        if(img != null) {
+            String fileName = UUID.randomUUID().toString() + ".jpg";
+            File convertFile = new File(IMAGE_PATH + fileName);
+            convertFile.createNewFile();
+            FileOutputStream fout = new FileOutputStream(convertFile);
+            fout.write(img.getBytes());
+            fout.close();
+            return fileName;
+        }
+        return null;
     }
 }
