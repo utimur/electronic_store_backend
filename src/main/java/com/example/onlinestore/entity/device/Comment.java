@@ -5,6 +5,8 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 
 import javax.persistence.*;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 @Entity
 @Data
@@ -15,7 +17,6 @@ public class Comment{
 
     @ManyToOne
     @JoinColumn(name = "device_id")
-    @JsonIgnore
     private Device device;
 
     @ManyToOne
@@ -24,7 +25,9 @@ public class Comment{
 
     private String text;
 
-    private Long likeCount;
+    private Long likeCount = new Long(0);
 
-    private Long dislikeCount;
+    private Long dislikeCount = new Long(0);
+    private String created = new SimpleDateFormat("dd.MM.yyyy").format(new Date());
+    private Long rating = new Long(0);
 }

@@ -4,6 +4,7 @@ package com.example.onlinestore.controller.v1;
 import com.example.onlinestore.dto.device.BrandDto;
 import com.example.onlinestore.dto.device.DeviceDto;
 import com.example.onlinestore.dto.device.DeviceTypeDto;
+import com.example.onlinestore.dto.device.FullDeviceDto;
 import com.example.onlinestore.entity.device.Brand;
 import com.example.onlinestore.entity.device.Device;
 import com.example.onlinestore.entity.device.DeviceType;
@@ -97,12 +98,10 @@ public class DeviceControllerV1 {
 
 
     @GetMapping("/{id}")
-    public ResponseEntity<List<DeviceDto>> getDevicesByTypeId(@PathVariable Long id) throws DeviceNotFoundException {
-        List<DeviceDto> devices = deviceService.getAllByTypeId(id).stream()
-                .map(DeviceDto::fromDevice)
-                .collect(Collectors.toList());
+    public ResponseEntity getDevice(@PathVariable Long id) throws DeviceNotFoundException {
+        Device device = deviceService.getById(id);
 
-        return new ResponseEntity<>( devices, HttpStatus.OK);
+        return new ResponseEntity<>(FullDeviceDto.fromDevice(device), HttpStatus.OK);
     }
 
     @GetMapping("/{type_id}/{brand_id}")

@@ -65,6 +65,14 @@ public class DeviceService {
         return devices;
     }
 
+    public Device getDeviceByTypeBrandDevice(String deviceName, String brandName,String typeName ) throws DeviceNotFoundException {
+        Device device = deviceRepo.findByNameAndBrandNameAndDeviceTypeName(deviceName, brandName,typeName);
+        if (device == null) {
+            throw new DeviceNotFoundException("Devices with type name " + deviceName + " not found");
+        }
+        return device;
+    }
+
     public Device save(Device device) {
         if (deviceRepo.findByName(device.getName()) != null) {
             throw new DeviceAlreadyExist("Device with name " + device.getName() + " already exist");

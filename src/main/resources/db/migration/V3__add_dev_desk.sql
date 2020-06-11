@@ -1,0 +1,1 @@
+alter table device add column description varchar(2048);

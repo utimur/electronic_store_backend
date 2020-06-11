@@ -1,27 +1,26 @@
 package com.example.onlinestore.dto.device;
 
+
+import com.example.onlinestore.entity.device.Comment;
 import com.example.onlinestore.entity.device.Device;
+import com.example.onlinestore.entity.device.Property;
 import com.example.onlinestore.service.ImageService;
 import lombok.Data;
 
 import java.io.File;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Data
-public class DeviceDto {
-    private Long id;
-    private String name;
-    private Long brandId;
-    private String brandName;
-    private Long typeId;
-    private String typeName;
-    private Long price;
-    private Float rating;
-    private String image;
-    private String description;
+public class FullDeviceDto extends DeviceDto{
+
+    private List<Property> properties;
+
+    private List<CommentDto> comments;
 
 
-    public static DeviceDto fromDevice(Device device) {
-        DeviceDto deviceDto = new DeviceDto();
+    public static FullDeviceDto fromDevice(Device device) {
+        FullDeviceDto deviceDto = new FullDeviceDto();
         deviceDto.setId(device.getId());
         deviceDto.setName(device.getName());
         deviceDto.setBrandId(device.getBrand().getId());
@@ -31,7 +30,8 @@ public class DeviceDto {
         deviceDto.setBrandName(device.getBrand().getName());
         deviceDto.setTypeName(device.getDeviceType().getName());
         deviceDto.setDescription(device.getDescription());
-
+        deviceDto.setComments(device.getComments().stream().map(CommentDto::fromComment).collect(Collectors.toList()));
+        deviceDto.setProperties(device.getProperties());
         if (device.getImage() != null) {
             String imgPath = ImageService.IMAGE_PATH + device.getImage();
             File file = new File(imgPath);
@@ -39,6 +39,6 @@ public class DeviceDto {
                 deviceDto.setImage(ImageService.encodeFileToBase64Binary(file));
             }
         }
-       return deviceDto;
+        return deviceDto;
     }
 }

@@ -33,6 +33,8 @@ public class Device  {
 
     private String image;
 
+    private String description;
+
     @OneToMany(mappedBy = "device",  cascade = CascadeType.ALL)
     private List<Property> properties;
 
