@@ -22,4 +22,8 @@ public class CommentService {
     public List<Comment> getByDeviceId(Long deviceId) {
         return commentRepo.findCommentsByDeviceId(deviceId);
     }
+
+    public Comment getById(Long id) {
+        return commentRepo.findById(id).get();
+    }
 }

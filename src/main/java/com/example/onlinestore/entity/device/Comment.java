@@ -7,6 +7,7 @@ import lombok.Data;
 import javax.persistence.*;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Data
@@ -30,4 +31,10 @@ public class Comment{
     private Long dislikeCount = new Long(0);
     private String created = new SimpleDateFormat("dd.MM.yyyy").format(new Date());
     private Long rating = new Long(0);
+
+    @OneToMany(mappedBy = "comment", cascade = CascadeType.ALL)
+    private List<Like> likes;
+
+    @OneToMany(mappedBy = "comment", cascade = CascadeType.ALL)
+    private List<Dislike> dislikes;
 }

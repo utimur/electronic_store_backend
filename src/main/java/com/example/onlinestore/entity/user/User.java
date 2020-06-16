@@ -1,5 +1,7 @@
 package com.example.onlinestore.entity.user;
 
+import com.example.onlinestore.entity.device.Dislike;
+import com.example.onlinestore.entity.device.Like;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -38,10 +40,18 @@ public class User {
 
     @OneToMany(mappedBy = "user")
     private List<Order> orders;
+
     @OneToMany(mappedBy = "user")
     private List<Basket> baskets;
+
     @OneToMany(mappedBy = "user")
     private List<Favourite> favourites;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<Like> likes;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<Dislike> dislikes;
 
     @Override
     public String toString() {

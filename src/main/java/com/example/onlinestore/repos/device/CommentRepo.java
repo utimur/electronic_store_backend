@@ -8,4 +8,5 @@ import java.util.List;
 public interface CommentRepo extends CrudRepository<Comment, Long> {
 
     List<Comment> findCommentsByDeviceId(Long deviceId);
+
 }

@@ -45,4 +45,5 @@ public class Device  {
     @JoinColumn(name ="type_id")
     private DeviceType deviceType;
 
+
 }

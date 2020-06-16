@@ -45,6 +45,12 @@ public class UserDto {
             if (imgFile.exists()) {
                 userDto.setAvatar(ImageService.encodeFileToBase64Binary(imgFile));
             }
+        } else {
+            String img = ImageService.IMAGE_PATH +"avatar.jpg";
+            File imgFile = new File(img);
+            if (imgFile.exists()) {
+                userDto.setAvatar(ImageService.encodeFileToBase64Binary(imgFile));
+            }
         }
 
 

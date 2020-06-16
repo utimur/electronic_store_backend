@@ -19,7 +19,7 @@ public class FullDeviceDto extends DeviceDto{
     private List<CommentDto> comments;
 
 
-    public static FullDeviceDto fromDevice(Device device) {
+    public static FullDeviceDto fromDevice(Device device, Long userId) {
         FullDeviceDto deviceDto = new FullDeviceDto();
         deviceDto.setId(device.getId());
         deviceDto.setName(device.getName());
@@ -30,7 +30,8 @@ public class FullDeviceDto extends DeviceDto{
         deviceDto.setBrandName(device.getBrand().getName());
         deviceDto.setTypeName(device.getDeviceType().getName());
         deviceDto.setDescription(device.getDescription());
-        deviceDto.setComments(device.getComments().stream().map(CommentDto::fromComment).collect(Collectors.toList()));
+
+        deviceDto.setComments(device.getComments().stream().map(comment -> CommentDto.fromComment(comment, userId)).collect(Collectors.toList()));
         deviceDto.setProperties(device.getProperties());
         if (device.getImage() != null) {
             String imgPath = ImageService.IMAGE_PATH + device.getImage();

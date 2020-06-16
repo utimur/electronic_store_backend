@@ -98,10 +98,10 @@ public class DeviceControllerV1 {
 
 
     @GetMapping("/{id}")
-    public ResponseEntity getDevice(@PathVariable Long id) throws DeviceNotFoundException {
+    public ResponseEntity getDevice(@PathVariable Long id, @RequestParam("user_id") Long userId) throws DeviceNotFoundException {
         Device device = deviceService.getById(id);
 
-        return new ResponseEntity<>(FullDeviceDto.fromDevice(device), HttpStatus.OK);
+        return new ResponseEntity<>(FullDeviceDto.fromDevice(device, userId), HttpStatus.OK);
     }
 
     @GetMapping("/{type_id}/{brand_id}")
