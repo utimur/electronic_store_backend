@@ -28,7 +28,9 @@ dependencies {
 
 	testCompileOnly 'org.projectlombok:lombok:1.18.12'
 	testAnnotationProcessor 'org.projectlombok:lombok:1.18.12'
-	
+
+	compile group: 'org.springframework.boot', name: 'spring-boot-starter-mail', version: '2.3.1.RELEASE'
+
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation 'org.flywaydb:flyway-core'

@@ -35,6 +35,8 @@ public class CommentDto {
             for (Like like: comment.getLikes()) {
                 if (like.getUser().getId().equals(userId)) {
                     commentDto.setIsLiked(true);
+                } else {
+                    commentDto.setIsLiked(false);
                 }
             }
         }

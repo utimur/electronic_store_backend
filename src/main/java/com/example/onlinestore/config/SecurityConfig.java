@@ -22,6 +22,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter implements WebM
     private static final String DEVICE_ENDPOINT = "/api/v1/devices/**";
     private static final String LOGIN_ENDPOINT = "/api/v1/auth/**";
     private static final String COMMENT_ENDPOINT = "/api/v1/comments";
+    private static final String MAIL_ENDPOINT = "/api/v1/mail/**";
     private static final String[] SWAGGER_ENDPOINT = {
             "/v2/api-docs",
             "/swagger-resources/**",
@@ -55,6 +56,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter implements WebM
                 .antMatchers(SWAGGER_ENDPOINT).permitAll()
                 .antMatchers(DEVICE_ENDPOINT).permitAll()
                 .antMatchers(COMMENT_ENDPOINT).permitAll()
+                .antMatchers(MAIL_ENDPOINT).permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .apply(new JwtConfigurer(jwtTokenProvider));

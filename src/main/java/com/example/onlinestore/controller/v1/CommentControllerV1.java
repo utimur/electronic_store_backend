@@ -21,14 +21,14 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("/api/v1/comments")
 @CrossOrigin
-public class CommentController {
+public class CommentControllerV1 {
 
     private final CommentService commentService;
     private final DeviceService deviceService;
     private final UserService userService;
     private final LikeRepo likeRepo;
 
-    public CommentController(CommentService commentService, DeviceService deviceService, UserService userService, LikeRepo likeRepo) {
+    public CommentControllerV1(CommentService commentService, DeviceService deviceService, UserService userService, LikeRepo likeRepo) {
         this.commentService = commentService;
         this.deviceService = deviceService;
         this.userService = userService;
@@ -71,12 +71,12 @@ public class CommentController {
         Comment comment = commentService.getById(like.getComment().getId());
         like.setUser(user);
         like.setComment(comment);
-        if (likeRepo.findByUserId(user.getId()) == null) {
+        if (likeRepo.findByUserIdAndCommentId(user.getId(), comment.getId()) == null) {
             comment.getLikes().add(like);
             comment.setLikeCount(comment.getLikeCount()+1);
         } else {
             comment.setLikeCount(comment.getLikeCount()-1);
-            likeRepo.deleteById(likeRepo.findByUserId(user.getId()).getId());
+            likeRepo.deleteById(likeRepo.findByUserIdAndCommentId(user.getId(), comment.getId()).getId());
         }
 
 

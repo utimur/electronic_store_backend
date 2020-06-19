@@ -31,7 +31,7 @@ public class FullDeviceDto extends DeviceDto{
         deviceDto.setTypeName(device.getDeviceType().getName());
         deviceDto.setDescription(device.getDescription());
 
-        deviceDto.setComments(device.getComments().stream().map(comment -> CommentDto.fromComment(comment, userId)).collect(Collectors.toList()));
+        deviceDto.setComments(device.getComments().stream().map((comment) -> CommentDto.fromComment(comment, userId)).collect(Collectors.toList()));
         deviceDto.setProperties(device.getProperties());
         if (device.getImage() != null) {
             String imgPath = ImageService.IMAGE_PATH + device.getImage();

@@ -7,4 +7,6 @@ public interface LikeRepo extends CrudRepository<Like, Long> {
     Like findByCommentId(Long commentId);
 
     Like findByUserId(Long userId);
+
+    Like findByUserIdAndCommentId(Long userId, Long commentId);
 }

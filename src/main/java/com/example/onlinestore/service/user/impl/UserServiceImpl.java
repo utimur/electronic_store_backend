@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 
 @Service
@@ -56,6 +57,15 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public User getByMail(String mail) {
+        User user = userRepository.findByMail(mail);
+        if (user == null) {
+            throw new UserNotFoundException("User not found");
+        }
+        return user;
+    }
+
+    @Override
     public User getById(Long id) {
         User result = userRepository.findById(id).orElse(null);
 
@@ -85,6 +95,5 @@ public class UserServiceImpl implements UserService {
     public void update(User user) {
         userRepository.save(user);
     }
-
 
 }
